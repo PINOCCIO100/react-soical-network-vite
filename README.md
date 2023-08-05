@@ -1,2 +1,2 @@
 # first-react-app
-My first React App ( Social Network)
+React Social Network (Fullstack)
