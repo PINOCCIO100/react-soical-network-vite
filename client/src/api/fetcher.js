@@ -3,9 +3,7 @@ import store from "../store";
 import { handleLogout } from "../store/reducers/authReducer";
 // создаю кастомный обработчик HTTP-запросов. В baseURL закидываю IP сервера
 export const fetcher = axios.create({
-  // TODO Починить работу с .env файлом
-  // baseURL: import.meta.env.REACT_APP_API_URL,
-  baseURL: 'http://localhost:3001',
+  baseURL: import.meta.env.VITE_REACT_APP_API_URL,
   withCredentials: true
 })
 

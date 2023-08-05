@@ -8,9 +8,7 @@
 // Если переменную с ID - переменную с аватаркой  
 
 const template = (userID) => {
-  // TODO Починить работу с .env файлом
-  // return `${import.meta.env.REACT_APP_API_URL}/api/avatars/${userID}`
-  return `${"http://localhost:3001"}/api/avatars/${userID}`
+  return `${import.meta.env.VITE_REACT_APP_API_URL}/api/avatars/${userID}`
 }
 
 export function reqUsersAvatar(IDSource) {
