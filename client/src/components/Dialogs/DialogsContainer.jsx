@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { Dialogs } from "./Dialogs";
-import { getUsersWithDialogs } from '../../store/reducers/usersMessagesReducer';
+import { getUsersWithDialogs } from '../../store_rtk/reducers/usersMessagesReducer';
 import React from "react";
 
 

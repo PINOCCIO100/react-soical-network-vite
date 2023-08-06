@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import styles from './PostBlock.module.scss';
 
 import { useCallback } from 'react';
-import { createPost } from '../../../store/reducers/usersPostsReducer';
+import { createPost } from '../../../store_rtk/reducers/usersPostsReducer';
 import FormikTextInput from '../../sharedComponents/FormikTextInput/FormikTextInput';
 import PostPostedListContainer from './PostPostedList/PostPostedListContainer';
 

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 
-import { handleLogout } from '../../store/reducers/authReducer';
+import { handleLogout } from '../../store_rtk/reducers/authReducer';
 
 import Header from './Header';
 

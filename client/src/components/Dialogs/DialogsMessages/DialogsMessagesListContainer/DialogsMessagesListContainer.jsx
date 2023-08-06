@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
-import { getUserDialog, getMyProfile, getCompanionProfile } from '../../../../store/reducers/usersMessagesReducer';
+import { getUserDialog, getMyProfile, getCompanionProfile } from '../../../../store_rtk/reducers/usersMessagesReducer';
 
 import DialogsMessagesList from "../DialogsMessagesList/DialogsMessagesList";
 import Preloader from "../../../sharedComponents/Preloader/Preloader";
-import { DIALOGS } from "../../../../store/reducers/fetchingReducer";
+import { DIALOGS } from "../../../../store_rtk/reducers/fetchingReducer";
 
 const DialogsMessagesListAPI = (props) => {
   const { userID } = useParams();

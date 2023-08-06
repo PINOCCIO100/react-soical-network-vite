@@ -3,7 +3,7 @@ import FormikTextInput from '../../sharedComponents/FormikTextInput/FormikTextIn
 import styles from './DialogsMessages.module.scss';
 
 import { useCallback } from 'react';
-import { createMessage } from '../../../store/reducers/usersMessagesReducer';
+import { createMessage } from '../../../store_rtk/reducers/usersMessagesReducer';
 import { DialogsMessagesListContainer } from './DialogsMessagesListContainer/DialogsMessagesListContainer';
 
 export function DialogsMessages() {

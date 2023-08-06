@@ -10,6 +10,7 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import Sidebar from './components/SideBar/Sidebar';
 // import Settings from './components/Settings/Settings';
 import { SignUpForm } from './SignUpForm';
+import Test from './Test';
 import ProfileRouter from './components/Profile/ProfileRouter';
 import SignInContainer from './components/SignIn/SignInContainer';
 import TrailingPage from './components/TrailingPage/TrailingPage';
@@ -26,11 +27,12 @@ export function App() {
           <Route path='/*' element={<Layout />}>
             <Route index element={<Navigate to={'/profile'} />} />
             <Route path="profile/*" element={<ProfileRouter />} />
-            <Route path="find-users/*" element={<Users />} />
-            <Route path="dialogs/*" element={<DialogsContainer />} />
+            {/* <Route path="find-users/*" element={<Users />} /> */}
+            {/* <Route path="dialogs/*" element={<DialogsContainer />} /> */}
             <Route path="news/*" element={null} />
             <Route path="music/*" element={null} />
             <Route path="settings/*" element={<SignUpForm />} />
+            <Route path='test/*' element={<Test />} />
             <Route path='*' element={<TrailingPage />} />
           </Route>
         </Routes >

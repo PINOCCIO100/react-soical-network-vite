@@ -25,6 +25,9 @@ function Sidebar() {
         <li>
           <Link className={s.link + " Link"} to='/settings'>Settings</Link>
         </li>
+        <li>
+          <Link className={s.link + " Link"} to='/test'>Test</Link>
+        </li>
       </ul>
     </nav >
   );

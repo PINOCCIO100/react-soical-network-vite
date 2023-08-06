@@ -10,8 +10,8 @@ function PostPostedList(props) {
           return (<PostPosted
             key={post._id}
             post={post}
-            onLike={() => props.ratePostThunk(post._id, 1)}
-            onDislike={() => props.ratePostThunk(post._id, -1)}
+            onLike={() => props.ratePostThunk({ postID: post._id, rating: 1 })}
+            onDislike={() => props.ratePostThunk({ postID: post._id, rating: -1 })}
           />)
         })
       }

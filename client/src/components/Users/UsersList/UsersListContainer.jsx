@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import UsersList from './UsersList';
 import Preloader from '../../sharedComponents/Preloader/Preloader';
 
-import { getUsers } from '../../../store/reducers/usersPageReducer';
-import { handleFollow } from '../../../store/reducers/usersPageReducer';
+import { getUsers } from '../../../store_rtk/reducers/usersPageReducer';
+import { handleFollow } from '../../../store_rtk/reducers/usersPageReducer';
 import { compose } from 'redux';
-import { USERS_PAGE } from '../../../store/reducers/fetchingReducer';
+import { USERS_PAGE } from '../../../store_rtk/reducers/fetchingReducer';
 
 function UsersListContainer(props) {
   const getUsers = props.getUsers;

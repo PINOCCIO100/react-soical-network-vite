@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "../store";
-import { handleLogout } from "../store/reducers/authReducer";
+import { handleLogout } from "../store_rtk/reducers/authReducer";
 // создаю кастомный обработчик HTTP-запросов. В baseURL закидываю IP сервера
 export const fetcher = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_API_URL,
