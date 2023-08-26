@@ -6,8 +6,8 @@ import { AUTH, setFetching } from "../reducers/fetchingReducer";
 
 export const handleLogout = createAsyncThunk(
   'Auth/handleLogout',
-  async (arg, thunkAPI) => {
-    thunkAPI.dispatch(setUserData({
+  async (arg, { dispatch }) => {
+    dispatch(setUserData({
       id: null,
       email: null,
       name: null,
@@ -19,18 +19,18 @@ export const handleLogout = createAsyncThunk(
 
 export const handleLogin = createAsyncThunk(
   'Auth/handleLogin',
-  async ({ email, password, rememberMe }, thunkAPI) => {
+  async ({ email, password, rememberMe }, { dispatch }) => {
     const res = await reqAuthUser({ email, password, rememberMe });
     if (res.resultCode === 0) {
-      thunkAPI.dispatch(handleAuthStatus())
+      const { id, email, name } = res.data
+      dispatch(setUserData({ id, email, name, isAuth: true }));
     }
   }
 )
 
 export const handleAuthStatus = createAsyncThunk(
   'Auth/handleAuthStatus',
-  async (arg, thunkAPI) => {
-    const { dispatch } = thunkAPI
+  async (arg, { dispatch }) => {
     dispatch(setFetching([AUTH, true]));
     const res = await reqAuthStatus()
     if (res.resultCode === 0) {

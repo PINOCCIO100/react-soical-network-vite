@@ -68,16 +68,31 @@ export const ratePostThunk = createAsyncThunk(
   }
 )
 
+export const setCurrentUserPosterTextThunk = createAsyncThunk(
+  'usersPostsReducer/setCurrentUserPosterText',
+  (arg, { dispatch, getState }) => {
+    const userID = getState().ProfileState.userProfileInfo?.id;
+    if (!userID) return;
+    dispatch(setCurrentUserPosterText(userID));
+  }
+)
+
 
 const usersPostsReducer = createSlice({
   name: 'usersPostsReducer',
   initialState: {
     usersPosts: [],
+    usersPostPosterText: {
+      currentUser: ''
+    },
   },
   reducers: {
     setPostPosterText: (state, action) => {
       const { userID, text } = action.payload
       state.usersPostPosterText[userID] = text
+    },
+    setCurrentUserPosterText: (state, action) => {
+      state.usersPostPosterText.currentUser = state.usersPostPosterText[action.payload]
     },
     addPost: (state, action) => {
       state.usersPosts.push(action.payload)
@@ -94,5 +109,5 @@ const usersPostsReducer = createSlice({
   }
 })
 
-export const { addPost, ratePost, setPostPosterText, setUserPosts } = usersPostsReducer.actions
+export const { addPost, ratePost, setPostPosterText, setUserPosts, setCurrentUserPosterText } = usersPostsReducer.actions
 export default usersPostsReducer.reducer

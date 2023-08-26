@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 

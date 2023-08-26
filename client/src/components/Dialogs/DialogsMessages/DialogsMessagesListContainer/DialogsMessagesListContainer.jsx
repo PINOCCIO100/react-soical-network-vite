@@ -1,23 +1,29 @@
-import React from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
-import { useEffect } from "react";
 
-import { getUserDialog, getMyProfile, getCompanionProfile } from '../../../../store_rtk/reducers/usersMessagesReducer';
+import { getCompanionProfile, getMyProfile, getUserDialog } from '../../../../store_rtk/reducers/usersMessagesReducer';
 
-import DialogsMessagesList from "../DialogsMessagesList/DialogsMessagesList";
-import Preloader from "../../../sharedComponents/Preloader/Preloader";
 import { DIALOGS } from "../../../../store_rtk/reducers/fetchingReducer";
+import Preloader from "../../../sharedComponents/Preloader/Preloader";
+import DialogsMessagesList from "../DialogsMessagesList/DialogsMessagesList";
 
 const DialogsMessagesListAPI = (props) => {
   const { userID } = useParams();
   const { pathname } = useLocation();
+  const {
+    getUserDialog,
+    getMyProfile,
+    getCompanionProfile,
+  } = props
+
   useEffect(() => {
     if (!userID) return;
-    props.getUserDialog(userID)
-    props.getMyProfile();
-    props.getCompanionProfile(userID);
-  }, [pathname])
+    getUserDialog(userID)
+    getMyProfile();
+    getCompanionProfile(userID);
+  }, [pathname, getUserDialog, getMyProfile, getCompanionProfile, userID])
+  
   return (
     props.isFetching ?
       <Preloader /> :

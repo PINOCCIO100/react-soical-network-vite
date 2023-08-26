@@ -1,124 +1,103 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { reqAuthStatus } from "../../api/reqAuthStatus";
 import { reqSendMessage, reqUserDialog, reqUsersIDWithDialogs } from "../../api/reqUserDialogs";
 import { reqUserProfileInfo } from "../../api/reqUserProfileInfo";
 import { reqUsersAvatar } from "../../api/reqUsersAvatar";
 import { DIALOGS, setFetching } from "../reducers/fetchingReducer";
 
-const SET_MESSAGE_SENDER_TEXT = 'SET-MESSAGE-SENDER-TEXT';
-const SET_USERS_WITH_DIALOGS = 'SET-USERS-WITH-DIALOGS';
-const SET_MESSAGES = 'SET-MESSAGES';
-const ADD_MESSAGE = 'ADD-MESSAGE';
-const SET_MY_PROFILE = 'SET-MY-PROFILE';
-const SET_COMPANION_PROFILE = 'SET-COMPANION-PROFILE';
 
-let initialState = {
-  usersMessageSenderText: {},
-  usersMessages: [],
-  usersWithDialogs: [],
-  myProfile: {},
-  companionProfile: {},
-};
+const usersMessagesReducer = createSlice({
+  name: 'usersMessagesReducer',
+  initialState: {
+    usersMessageSenderText: {
+      currentUser: ''
+    },
+    usersMessages: [],
+    usersWithDialogs: [],
+    myProfile: {},
+    companionProfile: {},
+  },
+  reducers: {
 
-const usersMessagesReducer = (state = initialState, action) => {
+    setMessageSenderText: (state, action) => {
+      state.usersMessageSenderText[state.companionProfile.id] = action.payload
+    },
+    setCurrentUserSenderText: (state) => {
+      state.usersMessageSenderText.currentUser =
+        state.usersMessageSenderText[state.companionProfile.id] ?? ''
+    },
 
-  switch (action.type) {
-    case SET_MESSAGE_SENDER_TEXT:
-      return {
-        ...state,
-        usersMessageSenderText: {
-          ...state.usersMessageSenderText,
-          [state.companionProfile.id]: action.payload.text,
-        }
-      };
-    case SET_USERS_WITH_DIALOGS:
-      return {
-        ...state,
-        usersWithDialogs: [...action.payload.usersID],
-      };
-    case SET_MESSAGES:
-      return {
-        ...state,
-        usersMessages: [...action.payload.messages],
-      };
-    case ADD_MESSAGE:
-      return {
-        ...state,
-        usersMessages: [...state.usersMessages, action.payload.message],
-      };
-    case SET_MY_PROFILE:
-      return {
-        ...state,
-        myProfile: { ...action.payload.profile }
-      };
-    case SET_COMPANION_PROFILE:
-      return {
-        ...state,
-        companionProfile: { ...action.payload.profile }
-      };
-    default:
-      return state;
+    setUsersWithDialogs: (state, action) => {
+      state.usersWithDialogs = action.payload
+    },
+    setMessages: (state, action) => {
+      state.usersMessages = action.payload
+    },
+    addMessage: (state, action) => {
+      state.usersMessages.push(action.payload)
+    },
+    setMyProfile: (state, action) => {
+      state.myProfile = action.payload
+    },
+    setCompanionProfile: (state, action) => {
+      state.companionProfile = action.payload
+    },
   }
-}
+})
 
 
-export const setMessageSenderText = (text) => ({
-  type: SET_MESSAGE_SENDER_TEXT,
-  payload: { text }
-});
-export const setUsersWithDialogs = (usersID) => ({
-  type: SET_USERS_WITH_DIALOGS,
-  payload: { usersID }
-});
-export const setMessages = (messages) => ({
-  type: SET_MESSAGES,
-  payload: { messages },
-});
-export const addMessage = (message) => ({
-  type: ADD_MESSAGE,
-  payload: { message },
-});
-export const setMyProfile = (profile) => ({
-  type: SET_MY_PROFILE,
-  payload: { profile },
-});
-export const setCompanionProfile = (profile) => ({
-  type: SET_COMPANION_PROFILE,
-  payload: { profile },
-});
-
-
-export const getUsersWithDialogs = () => async (dispatch) => {
-  const usersID = await reqUsersIDWithDialogs();
-  dispatch(setUsersWithDialogs(usersID));
-}
-export const getUserDialog = (userID) => async (dispatch) => {
-  dispatch(setFetching(DIALOGS, true));
-  const messages = await reqUserDialog(userID);
-  dispatch(setMessages(messages));
-  dispatch(setFetching(DIALOGS, false));
-}
-export const getMyProfile = () => async (dispatch) => {
-  const auth = await reqAuthStatus();
-  const profile = {
-    ...await reqUserProfileInfo(auth.data.id),
-    photo: reqUsersAvatar(auth.data.id)
+export const getUsersWithDialogs = createAsyncThunk(
+  'usersMessagesReducer/getUsersWithDialogs',
+  async (arg, { dispatch }) => {
+    const usersID = await reqUsersIDWithDialogs();
+    dispatch(setUsersWithDialogs(usersID));
   }
-  dispatch(setMyProfile(profile));
-}
-export const getCompanionProfile = (userID) => async (dispatch) => {
-  const profile = {
-    ...await reqUserProfileInfo(userID),
-    photo: reqUsersAvatar(userID)
+)
+
+export const getUserDialog = createAsyncThunk(
+  'usersMessagesReducer/getUserDialog',
+  async (userID, { dispatch }) => {
+    dispatch(setFetching([DIALOGS], true));
+    const messages = await reqUserDialog(userID);
+    dispatch(setMessages(messages));
+    dispatch(setFetching([DIALOGS, false]));
   }
-  dispatch(setCompanionProfile(profile));
-}
-export const createMessage = (message) => async (dispatch, getState) => {
-  const id = getState().DialogsState.companionProfile.id;
-  // const text = getState().DialogsState.usersMessageSenderText[id];
-  const res = await reqSendMessage(id, message);
-  if (res.resultCode === 0) {
-    dispatch(addMessage(res.data));
-    // dispatch(setMessageSenderText(''));
+)
+
+
+export const getMyProfile = createAsyncThunk(
+  'usersMessagesReducer/getMyProfile',
+  async (arg, { dispatch }) => {
+    const auth = await reqAuthStatus();
+    const profile = {
+      ...await reqUserProfileInfo(auth.data.id),
+      photo: reqUsersAvatar(auth.data.id)
+    }
+    dispatch(setMyProfile(profile));
   }
-}
-export default usersMessagesReducer
+)
+
+export const getCompanionProfile = createAsyncThunk(
+  'usersMessagesReducer/getCompanionProfile',
+  async (userID, { dispatch }) => {
+    const profile = {
+      ...await reqUserProfileInfo(userID),
+      photo: reqUsersAvatar(userID)
+    }
+    dispatch(setCompanionProfile(profile));
+  }
+)
+
+export const createMessage = createAsyncThunk(
+  'usersMessagesReducer/createMessage',
+  async (message, { dispatch, getState }) => {
+    const id = getState().DialogsState.companionProfile.id;
+    const res = await reqSendMessage(id, message);
+    if (res.resultCode === 0) {
+      dispatch(addMessage(res.data));
+    }
+  }
+)
+
+export const { addMessage, setMessageSenderText, setCurrentUserSenderText, setCompanionProfile, setMessages, setMyProfile, setUsersWithDialogs } = usersMessagesReducer.actions
+export default usersMessagesReducer.reducer

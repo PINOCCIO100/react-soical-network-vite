@@ -27,8 +27,8 @@ export function App() {
           <Route path='/*' element={<Layout />}>
             <Route index element={<Navigate to={'/profile'} />} />
             <Route path="profile/*" element={<ProfileRouter />} />
-            {/* <Route path="find-users/*" element={<Users />} /> */}
-            {/* <Route path="dialogs/*" element={<DialogsContainer />} /> */}
+            <Route path="find-users/*" element={<Users />} />
+            <Route path="dialogs/*" element={<DialogsContainer />} />
             <Route path="news/*" element={null} />
             <Route path="music/*" element={null} />
             <Route path="settings/*" element={<SignUpForm />} />

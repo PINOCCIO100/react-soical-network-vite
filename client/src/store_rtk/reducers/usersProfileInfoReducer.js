@@ -39,13 +39,9 @@ export const resetProfile = createAsyncThunk(
 const usersProfileInfoReducer = createSlice({
   name: 'ProfileState',
   initialState: {
-    // currentUserID: null,
     userProfileInfo: null,
   },
   reducers: {
-    // setCurrentUserID: (state, action) => {
-    //   state.currentUserID = action.payload
-    // },
     setUserProfile: (state, action) => {
       state.userProfileInfo = action.payload
     },

@@ -21,15 +21,18 @@ const messageValidation = Yup.object({
 })
 
 export default function FormikTextInput(props) {
+
   return (
     <Formik
       initialValues={{
-        message: ''
+        message: props.initText,
       }}
+      enableReinitialize={true}
       validationSchema={messageValidation}
       onSubmit={async ({ message }, { resetForm, setSubmitting }) => {
         await props.handleSubmit(message)
         setSubmitting(false);
+        props.handleInitText('')
         resetForm();
       }}
     >
@@ -37,6 +40,7 @@ export default function FormikTextInput(props) {
         <div className={[styles.TextInput, props.className].join(' ')}>
           <Field
             name='message'
+            handleInitText={props.handleInitText}
             className={['scrollBar', styles.TextInput__inputArea].join(' ')}
             type='text'
             placeholder='Text your message...'
@@ -53,16 +57,24 @@ export default function FormikTextInput(props) {
 }
 
 const CustomTextArea = (props) => {
-
+  console.log('render CustomTextArea');
   const { value } = props;
-  const textAreaElem = useRef(null);
-  useEffect(() => { autoResize(textAreaElem.current) }, [value])
+  const { onChange, handleInitText, ...rest } = props;
+
   const { handleSubmit } = useFormikContext();
+  const textAreaElem = useRef(null);
+
+  useEffect(() => { autoResize(textAreaElem.current) }, [value])
+
   return <textarea
     ref={textAreaElem}
     // Выглядит как костыль, но по другому textArea не сабмитится при нажатии на Enter
     onKeyDown={(e) => { e.code === 'Enter' && e.ctrlKey && handleSubmit(e) }}
-    {...props}
+    {...rest}
+    onChange={(e) => {
+      handleInitText(e.target.value)
+      onChange(e)
+    }}
   />
 
 }

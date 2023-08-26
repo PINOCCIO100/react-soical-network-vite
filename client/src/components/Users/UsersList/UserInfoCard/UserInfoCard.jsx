@@ -13,7 +13,7 @@ function UserInfoCard({ me, user, isFollowingProcess, handleFollow }) {
           />
           <button
             disabled={isFollowingProcess || me}
-            onClick={() => handleFollow(user.id, !user.followed)}
+            onClick={() => handleFollow({ userID: user.id, isFollow: !user.followed })}
             className={[s.UserInfoCard__followButton, user.followed ? s.unfollow : s.follow].join(' ')}
           >
             {me ? 'My profile' : user.followed ? 'Unfollow' : 'Follow'}

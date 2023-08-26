@@ -1,4 +1,3 @@
-import React from 'react';
 import s from './UsersList.module.scss';
 
 import UserInfoCard from './UserInfoCard/UserInfoCard';
