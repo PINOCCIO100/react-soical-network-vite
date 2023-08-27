@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { setCurrentPage, getUsers } from '../../../store_rtk/reducers/usersPageReducer';
+import { setCurrentPage, getUsers } from '../../../store/reducers/usersPageReducer';
 
 import UsersListPagination from "./UsersListPagination";
 

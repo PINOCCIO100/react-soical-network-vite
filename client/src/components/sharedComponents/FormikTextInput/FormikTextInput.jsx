@@ -57,10 +57,8 @@ export default function FormikTextInput(props) {
 }
 
 const CustomTextArea = (props) => {
-  console.log('render CustomTextArea');
   const { value } = props;
   const { onChange, handleInitText, ...rest } = props;
-
   const { handleSubmit } = useFormikContext();
   const textAreaElem = useRef(null);
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { handleLogin } from "../../store_rtk/reducers/authReducer";
+import { handleLogin } from "../../store/reducers/authReducer";
 import { compose } from "redux";
 import { SignIn } from "./SignIn";
 

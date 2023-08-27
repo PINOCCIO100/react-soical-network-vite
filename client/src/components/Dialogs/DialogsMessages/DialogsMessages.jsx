@@ -4,7 +4,7 @@ import styles from './DialogsMessages.module.scss';
 
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { createMessage, setCurrentUserSenderText, setMessageSenderText } from '../../../store_rtk/reducers/usersMessagesReducer';
+import { createMessage, setCurrentUserSenderText, setMessageSenderText } from '../../../store/reducers/usersMessagesReducer';
 import { DialogsMessagesListContainer } from './DialogsMessagesListContainer/DialogsMessagesListContainer';
 
 export function DialogsMessages() {

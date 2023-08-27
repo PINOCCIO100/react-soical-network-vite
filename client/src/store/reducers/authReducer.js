@@ -1,64 +1,67 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { reqAuthStatus } from "../../api/reqAuthStatus";
 import { reqAuthUser } from "../../api/reqAuthUser";
 import { AUTH, setFetching } from "../reducers/fetchingReducer";
 
-const SET_USER_DATA = 'SET-USER-DATA';
-const SET_AUTH = 'SET-AUTH';
-
-const initialState = {
-  id: null,
-  email: null,
-  name: null,
-  isAuth: false,
-};
-
-export default function authReducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_USER_DATA:
-      return {
-        ...state,
-        ...action.payload,
-      };
-    case SET_AUTH:
-      return {
-        ...state,
-        isAuth: action.payload.isAuth,
-      };
-    default:
-      return state;
+export const handleLogout = createAsyncThunk(
+  'Auth/handleLogout',
+  async (arg, { dispatch }) => {
+    dispatch(setUserData({
+      id: null,
+      email: null,
+      name: null,
+      isAuth: false,
+    }))
+    Cookies.remove('session');
   }
-}
+)
 
-export const setUserData = (id, email, name, isAuth) => ({
-  type: SET_USER_DATA,
-  payload: { id, email, name, isAuth }
-});
-export const setIsAuth = (isAuth) => ({
-  type: SET_AUTH,
-  payload: { isAuth }
-});
+export const handleLogin = createAsyncThunk(
+  'Auth/handleLogin',
+  async ({ email, password, rememberMe }, { dispatch }) => {
+    const res = await reqAuthUser({ email, password, rememberMe });
+    if (res.resultCode === 0) {
+      const { id, email, name } = res.data
+      dispatch(setUserData({ id, email, name, isAuth: true }));
+    }
+  }
+)
 
-export const handleAuthStatus = () => async (dispatch) => {
-  dispatch(setFetching(AUTH, true));
-  const res = await reqAuthStatus()
-  if (res.resultCode === 0) {
-    dispatch(setUserData(
-      res.data.id,
-      res.data.email,
-      res.data.name,
-      true
-    ));
+export const handleAuthStatus = createAsyncThunk(
+  'Auth/handleAuthStatus',
+  async (arg, { dispatch }) => {
+    dispatch(setFetching([AUTH, true]));
+    const res = await reqAuthStatus()
+    if (res.resultCode === 0) {
+      const { id, email, name } = res.data
+      dispatch(setUserData({ id, email, name, isAuth: true }));
+    }
+    dispatch(setFetching([AUTH, false]));
   }
-  dispatch(setFetching(AUTH, false));
-};
-export const handleLogout = () => (dispatch) => {
-  dispatch(setUserData(null, null, null, false))
-  Cookies.remove('session');
-};
-export const handleLogin = ({ email, password, rememberMe }) => async (dispatch) => {
-  const res = await reqAuthUser({ email, password, rememberMe });
-  if (res.resultCode === 0) {
-    dispatch(handleAuthStatus())
+)
+
+const authReducer = createSlice({
+  name: 'Auth',
+  initialState: {
+    id: null,
+    email: null,
+    name: null,
+    isAuth: false,
+  },
+  reducers: {
+    setUserData: (state, action) => {
+      const { id, email, name, isAuth, } = action.payload
+      state.id = id
+      state.email = email
+      state.name = name
+      state.isAuth = isAuth
+    },
+    setIsAuth: (state, action) => {
+      state.isAuth = action.payload
+    }
   }
-};
+})
+
+export const { setIsAuth, setUserData } = authReducer.actions
+export default authReducer.reducer

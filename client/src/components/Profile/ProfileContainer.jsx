@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { compose } from 'redux';
-import { PROFILE_INFO } from '../../store_rtk/reducers/fetchingReducer';
+import { PROFILE_INFO } from '../../store/reducers/fetchingReducer';
 
-import { getUserProfileInfo, resetProfile } from '../../store_rtk/reducers/usersProfileInfoReducer';
+import { getUserProfileInfo, resetProfile } from '../../store/reducers/usersProfileInfoReducer';
 
 import Preloader from '../sharedComponents/Preloader/Preloader';
 import Profile from './Profile';

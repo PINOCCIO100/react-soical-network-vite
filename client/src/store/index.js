@@ -1,26 +1,36 @@
-import thunkMiddleware from 'redux-thunk';
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { configureStore } from '@reduxjs/toolkit'
+import { fetcher } from '../api/fetcher'
+import authReducer, { handleLogout } from './reducers/authReducer'
+import fetchingReducer from './reducers/fetchingReducer'
+import usersMessagesReducer from './reducers/usersMessagesReducer'
+import usersPageReducer from './reducers/usersPageReducer'
+import usersPostsReducer from './reducers/usersPostsReducer'
+import usersProfileInfoReducer from './reducers/usersProfileInfoReducer'
 
-import usersMessagesReducer from './reducers/usersMessagesReducer';
-import usersPostsReducer from './reducers/usersPostsReducer';
-import usersProfileInfoReducer from "./reducers/usersProfileInfoReducer";
-import usersPageReducer from './reducers/usersPageReducer';
-import authReducer from "./reducers/authReducer";
-import fetchingReducer from './reducers/fetchingReducer';
-// TODO: перейти на redux-toolkit
 
-let reducers = combineReducers({
-  PostsState: usersPostsReducer,
-  DialogsState: usersMessagesReducer,
-  ProfileState: usersProfileInfoReducer,
-  UsersPage: usersPageReducer,
-  FetchingState: fetchingReducer,
-  Auth: authReducer,
-});
+export const store = configureStore({
+  reducer: {
+    PostsState: usersPostsReducer,
+    FetchingState: fetchingReducer,
+    Auth: authReducer,
+    ProfileState: usersProfileInfoReducer,
+    DialogsState: usersMessagesReducer,
+    UsersPage: usersPageReducer,
+  }
+})
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleware));
-
-// TODO: потом удалить
-window.store = store
-
-export default store;
+// Поместил сюда, чтобы не было круговых импортов
+// Интерсептер для axios запросов. Можно обрабатывать все запросы/ответы
+fetcher.interceptors.response.use((res) => {
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Если статус == 299 (клиент не авторизован / сессия просрочена), то любой запрос на сервер вызывает logout
+  if (res.status === 299) {
+    store.dispatch(handleLogout())
+  }
+  return res
+},
+  (e) => {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(e)
+  })

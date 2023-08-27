@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStatusThunk } from '../../../store_rtk/reducers/usersProfileInfoReducer';
+import { setStatusThunk } from '../../../store/reducers/usersProfileInfoReducer';
 import s from './ProfileStatus.module.scss';
 
 

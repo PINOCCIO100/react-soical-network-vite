@@ -3,12 +3,13 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { AUTH } from './store_rtk/reducers/fetchingReducer';
-import { handleAuthStatus } from './store_rtk/reducers/authReducer';
+import { AUTH } from './store/reducers/fetchingReducer';
+import { handleAuthStatus } from './store/reducers/authReducer';
 
 import { App } from './App';
 
 import Preloader from './components/sharedComponents/Preloader/Preloader';
+
 
 
 function AppContainer(props) {

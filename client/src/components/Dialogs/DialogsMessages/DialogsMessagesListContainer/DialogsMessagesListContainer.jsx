@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 
-import { getCompanionProfile, getMyProfile, getUserDialog } from '../../../../store_rtk/reducers/usersMessagesReducer';
+import { getCompanionProfile, getMyProfile, getUserDialog } from '../../../../store/reducers/usersMessagesReducer';
 
-import { DIALOGS } from "../../../../store_rtk/reducers/fetchingReducer";
+import { DIALOGS } from "../../../../store/reducers/fetchingReducer";
 import Preloader from "../../../sharedComponents/Preloader/Preloader";
 import DialogsMessagesList from "../DialogsMessagesList/DialogsMessagesList";
 

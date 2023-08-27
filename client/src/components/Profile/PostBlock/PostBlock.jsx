@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './PostBlock.module.scss';
 
 import { useCallback, useEffect } from 'react';
-import { createPost, setCurrentPostPosterText, setCurrentUserPosterTextThunk } from '../../../store_rtk/reducers/usersPostsReducer';
+import { createPost, setCurrentPostPosterText, setCurrentUserPosterTextThunk } from '../../../store/reducers/usersPostsReducer';
 import FormikTextInput from '../../sharedComponents/FormikTextInput/FormikTextInput';
 import PostPostedListContainer from './PostPostedList/PostPostedListContainer';
 
