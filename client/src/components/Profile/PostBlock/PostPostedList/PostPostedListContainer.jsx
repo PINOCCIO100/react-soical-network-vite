@@ -4,20 +4,19 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 
 import { POSTS } from "../../../../store/reducers/fetchingReducer";
-import { getAllMyPosts, ratePostThunk } from '../../../../store/reducers/usersPostsReducer';
+import { getAllMyPosts, ratePostThunk, deletePostThunk } from '../../../../store/reducers/usersPostsReducer';
 
 import Preloader from '../../../sharedComponents/Preloader/Preloader';
 import PostPostedList from "./PostPostedList";
 
 function PostPostedListAPI(props) {
-  useEffect(() => {
-    props.getAllMyPosts();
-  }, [])
+  const { getAllMyPosts, ...restProps } = props;
+  useEffect(() => { getAllMyPosts() }, [getAllMyPosts])
   return (
     props.isFetching ?
       <Preloader /> :
       <PostPostedList
-        {...props}
+        {...restProps}
       />
   );
 }
@@ -29,5 +28,5 @@ export default compose(
       curUserPosts: state.PostsState.usersPosts,
       isFetching: state.FetchingState[POSTS],
     }),
-    { getAllMyPosts, ratePostThunk }),
+    { getAllMyPosts, ratePostThunk, deletePostThunk }),
 )(PostPostedListAPI)

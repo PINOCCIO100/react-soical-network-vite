@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { reqMyVote, reqRate, reqVotes } from "../../api/reqRate";
-import { reqAllUserPosts, reqPublishPost } from "../../api/reqUserPosts";
+import { reqAllUserPosts, reqDeletePost, reqPublishPost } from "../../api/reqUserPosts";
 import { reqUsersAvatar } from "../../api/reqUsersAvatar";
 import { POSTS, setFetching } from "./fetchingReducer";
 
@@ -77,6 +77,15 @@ export const setCurrentUserPosterTextThunk = createAsyncThunk(
   }
 )
 
+export const deletePostThunk = createAsyncThunk(
+  'usersPostsReducer/deletePostThunk',
+  async ({ postID, senderID, accepterID }, { dispatch }) => {
+    const res = await reqDeletePost(postID, senderID, accepterID)
+    if (res.resultCode == 0) {
+      dispatch(deletePost(postID))
+    }
+  }
+)
 
 const usersPostsReducer = createSlice({
   name: 'usersPostsReducer',
@@ -97,6 +106,10 @@ const usersPostsReducer = createSlice({
     addPost: (state, action) => {
       state.usersPosts.push(action.payload)
     },
+    deletePost: (state, action) => {
+      const postID = action.payload
+      state.usersPosts = state.usersPosts.filter(post => post._id != postID)
+    },
     setUserPosts: (state, action) => {
       state.usersPosts = action.payload
     },
@@ -109,5 +122,5 @@ const usersPostsReducer = createSlice({
   }
 })
 
-export const { addPost, ratePost, setPostPosterText, setUserPosts, setCurrentUserPosterText } = usersPostsReducer.actions
+export const { addPost, ratePost, setPostPosterText, setUserPosts, setCurrentUserPosterText, deletePost } = usersPostsReducer.actions
 export default usersPostsReducer.reducer

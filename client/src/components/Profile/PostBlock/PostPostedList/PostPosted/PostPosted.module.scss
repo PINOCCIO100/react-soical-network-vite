@@ -34,13 +34,47 @@
       }
     }
 
-    .postPosted__ratingButtons {
-      padding: 10px;
+    .postPosted_postFooter {
       display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      align-items: center;
+      justify-content: space-between;
+
+
+      .postPosted__postFooter__left {
+        display: flex;
+        column-gap: 10px;
+        justify-self: flex-start;
+        flex-direction: row;
+        align-items: center;
+
+        .postPosted__postDate {
+          display: block;
+        }
+
+        .postPosted__edit {}
+
+        .postPosted__delete {}
+
+        .postPosted__additionalButtons {
+          user-select: none;
+          font-weight: bold;
+          color: var(--color-bg-8);
+          cursor: pointer;
+
+          &:active {
+            color: var(--color-bg-5);
+          }
+        }
+      }
+
+      .postPosted__postFooter__right {
+        padding: 10px;
+        display: flex;
+        column-gap: 10px;
+        justify-content: flex-end;
+        align-items: center;
+      }
     }
+
   }
 
 }

@@ -31,10 +31,6 @@ exports.postPost = async (req, res) => {
       senderID,
       accepterID,
       post,
-      rating: {
-        likes: 0,
-        dislikes: 0
-      },
       postDate: Date.now(),
     });
     res.json({
@@ -50,3 +46,23 @@ exports.postPost = async (req, res) => {
   }
 }
 
+exports.deletePost = async (req, res) => {
+  const userID = req.session.id
+  const { postID, senderID, accepterID } = req.body;
+  try {
+    if (userID !== senderID && userID !== accepterID) {
+      throw new Error(`User ${userID} has not permission for deleting this post!`)
+    }
+    await Posts.deleteOne({ _id: postID })
+    res.json({
+      resultCode: 0,
+      message: [],
+    })
+  } catch (e) {
+    console.log(e.message);
+    res.json({
+      resultCode: 1,
+      message: [e.message]
+    })
+  }
+}

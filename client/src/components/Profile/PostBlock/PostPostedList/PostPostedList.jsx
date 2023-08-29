@@ -12,6 +12,7 @@ function PostPostedList(props) {
             post={post}
             onLike={() => props.ratePostThunk({ postID: post._id, rating: 1 })}
             onDislike={() => props.ratePostThunk({ postID: post._id, rating: -1 })}
+            onDelete={() => props.deletePostThunk({ postID: post._id, senderID: post.senderID, accepterID: post.accepterID })}
           />)
         })
       }
